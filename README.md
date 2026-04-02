@@ -50,7 +50,7 @@ npm install
 npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [https://financing-portal.netlify.app/](https://financing-portal.netlify.app/) in your browser.
 
 ## Project Structure
 
