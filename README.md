@@ -1,70 +1,81 @@
-# Getting Started with Create React App
+# Finance Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A clean, interactive finance dashboard built with React + Tailwind CSS.
 
-## Available Scripts
+## Tech Stack
 
-In the project directory, you can run:
+- **React 18** (Create React App) — component-based UI
+- **Tailwind CSS** — utility-first styling
+- **Recharts** — Line, Bar, and Pie charts
+- **Context API** — global state management
+- **localStorage** — data persistence across sessions
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Dashboard Overview
+- Summary cards: Total Balance, Income, Expenses
+- Line chart: Income vs Expenses trend (monthly)
+- Pie chart: Spending by category
+- Recent transactions list
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Transactions
+- Full transaction list with date, description, category, type, amount
+- Search by description
+- Filter by type (income / expense) and category
+- Sort by date or amount (asc / desc)
 
-### `npm test`
+### Role-Based UI
+- **Viewer** — read-only access, no add / edit / delete
+- **Admin** — can add, edit, and delete transactions
+- Switch roles via the dropdown in the navbar
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Insights
+- Top spending category
+- Overall savings rate
+- Last month savings
+- Monthly income vs expenses bar chart
+- Full category breakdown with visual progress bars
 
-### `npm run build`
+### UX
+- Responsive layout — table on desktop, cards on mobile
+- Hamburger menu on mobile
+- Empty state handling for no data / no filter results
+- All data persisted in localStorage
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Getting Started
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+cd finance-dashboard
+npm install
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### `npm run eject`
+## Project Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+src/
+├── context/
+│   └── AppContext.js         # Global state (transactions, role) + localStorage sync
+├── data/
+│   └── transactions.js       # Default mock transactions
+├── components/
+│   ├── Navbar.jsx            # Top nav with tab navigation + role switcher
+│   ├── SummaryCards.jsx      # Balance, Income, Expenses cards
+│   ├── Charts.jsx            # Line chart + Pie chart
+│   └── TransactionModal.jsx  # Add / edit transaction modal (admin only)
+├── pages/
+│   ├── Dashboard.jsx         # Overview page
+│   ├── Transactions.jsx      # Full transaction list with filters
+│   └── Insights.jsx          # Spending insights and charts
+├── App.js                    # Root component, page routing
+├── index.js                  # React entry point
+└── index.css                 # Tailwind directives + base styles
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Notes
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- No backend — all data is mock / static
+- Role switching is frontend-only for demonstration purposes
+- Transactions added by admin are persisted via localStorage across sessions
