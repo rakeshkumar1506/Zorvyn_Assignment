@@ -30,41 +30,39 @@ function TransactionModal({ existing, onSave, onClose }) {
   function handleSubmit(e) {
     e.preventDefault();
     if (!form.description || !form.amount) return;
-    onSave({
-      ...existing,
-      ...form,
-      amount: parseFloat(form.amount),
-    });
+    onSave({ ...existing, ...form, amount: parseFloat(form.amount) });
   }
 
+  const inputClass = "w-full border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500";
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 px-4">
-      <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-xl">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+      <div className="bg-white dark:bg-gray-900 rounded-xl p-6 w-full max-w-md shadow-xl border border-gray-100 dark:border-gray-800">
 
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-base font-semibold text-gray-800">
+          <h2 className="text-base font-semibold text-gray-800 dark:text-white">
             {existing ? "Edit Transaction" : "Add Transaction"}
           </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xl leading-none">×</button>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
 
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">Description</label>
+            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Description</label>
             <input
               name="description"
               value={form.description}
               onChange={handleChange}
               placeholder="e.g. Salary, Rent..."
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={inputClass}
               required
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Amount ($)</label>
+              <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Amount (₹)</label>
               <input
                 name="amount"
                 type="number"
@@ -73,46 +71,34 @@ function TransactionModal({ existing, onSave, onClose }) {
                 value={form.amount}
                 onChange={handleChange}
                 placeholder="0.00"
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={inputClass}
                 required
               />
             </div>
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Date</label>
+              <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Date</label>
               <input
                 name="date"
                 type="date"
                 value={form.date}
                 onChange={handleChange}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={inputClass}
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Type</label>
-              <select
-                name="type"
-                value={form.type}
-                onChange={handleChange}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
+              <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Type</label>
+              <select name="type" value={form.type} onChange={handleChange} className={inputClass}>
                 <option value="income">Income</option>
                 <option value="expense">Expense</option>
               </select>
             </div>
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Category</label>
-              <select
-                name="category"
-                value={form.category}
-                onChange={handleChange}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
+              <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Category</label>
+              <select name="category" value={form.category} onChange={handleChange} className={inputClass}>
+                {CATEGORIES.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
               </select>
             </div>
           </div>
@@ -121,7 +107,7 @@ function TransactionModal({ existing, onSave, onClose }) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 border border-gray-200 text-gray-600 rounded-lg py-2 text-sm hover:bg-gray-50"
+              className="flex-1 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-lg py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               Cancel
             </button>
