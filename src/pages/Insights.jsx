@@ -1,6 +1,6 @@
 import React from "react";
 import { useApp } from "../context/AppContext";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 function Insights() {
   const { transactions } = useApp();
@@ -13,7 +13,6 @@ function Insights() {
     );
   }
 
-  // Highest spending category
   const categoryTotals = {};
   transactions
     .filter((tx) => tx.type === "expense")
@@ -24,7 +23,6 @@ function Insights() {
   const categoryEntries = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1]);
   const topCategory = categoryEntries[0];
 
-  // Monthly income vs expense comparison
   const monthlyMap = {};
   transactions.forEach((tx) => {
     const month = tx.date.slice(0, 7);
@@ -42,12 +40,9 @@ function Insights() {
       Saved: data.income - data.expenses,
     }));
 
-  // Total income and expenses
   const totalIncome = transactions.filter((tx) => tx.type === "income").reduce((s, tx) => s + tx.amount, 0);
   const totalExpenses = transactions.filter((tx) => tx.type === "expense").reduce((s, tx) => s + tx.amount, 0);
   const savingsRate = totalIncome > 0 ? (((totalIncome - totalExpenses) / totalIncome) * 100).toFixed(1) : 0;
-
-  // Most recent month savings
   const lastMonth = monthlyData[monthlyData.length - 1];
 
   return (
@@ -61,9 +56,7 @@ function Insights() {
         <div className="bg-white rounded-xl border border-gray-100 p-5">
           <p className="text-xs text-gray-500 mb-1">Top Spending Category</p>
           <p className="text-xl font-bold text-gray-800">{topCategory ? topCategory[0] : "—"}</p>
-          <p className="text-sm text-red-500 mt-1">
-            ${topCategory ? topCategory[1].toLocaleString() : 0} spent
-          </p>
+          <p className="text-sm text-red-500 mt-1">${topCategory ? topCategory[1].toLocaleString() : 0} spent</p>
         </div>
 
         <div className="bg-white rounded-xl border border-gray-100 p-5">
@@ -83,14 +76,15 @@ function Insights() {
       </div>
 
       {/* Monthly Comparison Bar Chart */}
-      <div className="bg-white rounded-xl border border-gray-100 p-5">
+      <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
         <h3 className="text-sm font-semibold text-gray-700 mb-4">Monthly Income vs Expenses</h3>
-        <ResponsiveContainer width="100%" height={240}>
-          <BarChart data={monthlyData} barGap={4}>
+        <ResponsiveContainer width="100%" height={220}>
+          <BarChart data={monthlyData} barGap={4} margin={{ left: -10, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} />
+            <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+            <YAxis tick={{ fontSize: 11 }} width={55} />
             <Tooltip formatter={(val) => `$${val.toLocaleString()}`} />
+            <Legend wrapperStyle={{ fontSize: "12px" }} />
             <Bar dataKey="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
             <Bar dataKey="Expenses" fill="#ef4444" radius={[4, 4, 0, 0]} />
           </BarChart>
@@ -98,7 +92,7 @@ function Insights() {
       </div>
 
       {/* Category Breakdown */}
-      <div className="bg-white rounded-xl border border-gray-100 p-5">
+      <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
         <h3 className="text-sm font-semibold text-gray-700 mb-4">Spending Breakdown</h3>
         {categoryEntries.length === 0 ? (
           <p className="text-gray-400 text-sm">No expense data</p>
@@ -110,13 +104,10 @@ function Insights() {
                 <div key={cat}>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-gray-600">{cat}</span>
-                    <span className="text-gray-500">${amount.toLocaleString()} ({percent}%)</span>
+                    <span className="text-gray-500 text-xs">${amount.toLocaleString()} ({percent}%)</span>
                   </div>
                   <div className="w-full bg-gray-100 rounded-full h-2">
-                    <div
-                      className="bg-blue-500 h-2 rounded-full"
-                      style={{ width: `${percent}%` }}
-                    />
+                    <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${percent}%` }} />
                   </div>
                 </div>
               );
