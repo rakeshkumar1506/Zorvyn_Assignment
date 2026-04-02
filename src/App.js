@@ -36,7 +36,7 @@ function App() {
         )}
 
         {/* Main content */}
-        <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 lg:overflow-y-auto lg:h-screen">
 
           {/* Mobile topbar */}
           <header className="lg:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-3 flex items-center justify-between">

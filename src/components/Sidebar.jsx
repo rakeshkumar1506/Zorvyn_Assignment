@@ -33,9 +33,9 @@ function Sidebar({ activePage, setActivePage, sidebarOpen, setSidebarOpen }) {
 
   return (
     <aside className={`
-      fixed lg:static inset-y-0 left-0 z-30
+      fixed lg:sticky lg:top-0 lg:h-screen inset-y-0 left-0 z-30
       w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800
-      flex flex-col
+      flex flex-col flex-shrink-0
       transform transition-transform duration-200 ease-in-out
       ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
     `}>
