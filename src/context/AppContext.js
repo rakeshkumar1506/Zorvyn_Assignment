@@ -40,6 +40,10 @@ export function AppProvider({ children }) {
     return localStorage.getItem("role") || "viewer";
   });
 
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("darkMode") === "true";
+  });
+
   useEffect(() => {
     localStorage.setItem("transactions", JSON.stringify(transactions));
   }, [transactions]);
@@ -47,6 +51,15 @@ export function AppProvider({ children }) {
   useEffect(() => {
     localStorage.setItem("role", role);
   }, [role]);
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", darkMode);
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
 
   function addTransaction(tx) {
     const newTx = { ...tx, id: Date.now() };
@@ -65,7 +78,7 @@ export function AppProvider({ children }) {
 
   return (
     <AppContext.Provider
-      value={{ transactions, role, setRole, addTransaction, editTransaction, deleteTransaction }}
+      value={{ transactions, role, setRole, darkMode, setDarkMode, addTransaction, editTransaction, deleteTransaction }}
     >
       {children}
     </AppContext.Provider>
