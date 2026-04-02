@@ -3,11 +3,11 @@ import { useApp } from "../context/AppContext";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 function Insights() {
-  const { transactions } = useApp();
+  const { transactions, darkMode } = useApp();
 
   if (transactions.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-gray-100 p-10 text-center">
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-10 text-center">
         <p className="text-gray-400 text-sm">No data to show insights</p>
       </div>
     );
@@ -45,46 +45,52 @@ function Insights() {
   const savingsRate = totalIncome > 0 ? (((totalIncome - totalExpenses) / totalIncome) * 100).toFixed(1) : 0;
   const lastMonth = monthlyData[monthlyData.length - 1];
 
+  const axisColor = darkMode ? "#9ca3af" : "#6b7280";
+  const gridColor = darkMode ? "#374151" : "#f0f0f0";
+  const tooltipStyle = darkMode
+    ? { backgroundColor: "#1f2937", border: "1px solid #374151", color: "#f9fafb" }
+    : { backgroundColor: "#fff", border: "1px solid #e5e7eb", color: "#111827" };
+
   return (
     <div className="flex flex-col gap-4">
 
-      <h2 className="text-base font-semibold text-gray-800">Insights</h2>
+      <h2 className="text-base font-semibold text-gray-800 dark:text-white">Insights</h2>
 
       {/* Insight Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
-        <div className="bg-white rounded-xl border border-gray-100 p-5">
-          <p className="text-xs text-gray-500 mb-1">Top Spending Category</p>
-          <p className="text-xl font-bold text-gray-800">{topCategory ? topCategory[0] : "—"}</p>
-          <p className="text-sm text-red-500 mt-1">${topCategory ? topCategory[1].toLocaleString() : 0} spent</p>
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-5">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Top Spending Category</p>
+          <p className="text-xl font-bold text-gray-800 dark:text-white">{topCategory ? topCategory[0] : "—"}</p>
+          <p className="text-sm text-red-500 dark:text-red-400 mt-1">₹{topCategory ? topCategory[1].toLocaleString() : 0} spent</p>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-100 p-5">
-          <p className="text-xs text-gray-500 mb-1">Overall Savings Rate</p>
-          <p className="text-xl font-bold text-gray-800">{savingsRate}%</p>
-          <p className="text-sm text-gray-400 mt-1">of total income saved</p>
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-5">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Overall Savings Rate</p>
+          <p className="text-xl font-bold text-gray-800 dark:text-white">{savingsRate}%</p>
+          <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">of total income saved</p>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-100 p-5">
-          <p className="text-xs text-gray-500 mb-1">Last Month Saved</p>
-          <p className={`text-xl font-bold ${lastMonth && lastMonth.Saved >= 0 ? "text-green-600" : "text-red-500"}`}>
-            ${lastMonth ? lastMonth.Saved.toLocaleString() : 0}
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-5">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Last Month Saved</p>
+          <p className={`text-xl font-bold ${lastMonth && lastMonth.Saved >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}`}>
+            ₹{lastMonth ? lastMonth.Saved.toLocaleString() : 0}
           </p>
-          <p className="text-sm text-gray-400 mt-1">{lastMonth ? lastMonth.month : "—"}</p>
+          <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{lastMonth ? lastMonth.month : "—"}</p>
         </div>
 
       </div>
 
       {/* Monthly Comparison Bar Chart */}
-      <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
-        <h3 className="text-sm font-semibold text-gray-700 mb-4">Monthly Income vs Expenses</h3>
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-4 sm:p-5">
+        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-4">Monthly Income vs Expenses</h3>
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={monthlyData} barGap={4} margin={{ left: -10, right: 10 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="month" tick={{ fontSize: 11 }} />
-            <YAxis tick={{ fontSize: 11 }} width={55} />
-            <Tooltip formatter={(val) => `$${val.toLocaleString()}`} />
-            <Legend wrapperStyle={{ fontSize: "12px" }} />
+            <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+            <XAxis dataKey="month" tick={{ fontSize: 11, fill: axisColor }} />
+            <YAxis tick={{ fontSize: 11, fill: axisColor }} width={55} />
+            <Tooltip formatter={(val) => `₹${val.toLocaleString()}`} contentStyle={tooltipStyle} />
+            <Legend wrapperStyle={{ fontSize: "12px", color: axisColor }} />
             <Bar dataKey="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
             <Bar dataKey="Expenses" fill="#ef4444" radius={[4, 4, 0, 0]} />
           </BarChart>
@@ -92,8 +98,8 @@ function Insights() {
       </div>
 
       {/* Category Breakdown */}
-      <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
-        <h3 className="text-sm font-semibold text-gray-700 mb-4">Spending Breakdown</h3>
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-4 sm:p-5">
+        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-4">Spending Breakdown</h3>
         {categoryEntries.length === 0 ? (
           <p className="text-gray-400 text-sm">No expense data</p>
         ) : (
@@ -103,10 +109,10 @@ function Insights() {
               return (
                 <div key={cat}>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">{cat}</span>
-                    <span className="text-gray-500 text-xs">${amount.toLocaleString()} ({percent}%)</span>
+                    <span className="text-gray-600 dark:text-gray-300">{cat}</span>
+                    <span className="text-gray-500 dark:text-gray-400 text-xs">₹{amount.toLocaleString()} ({percent}%)</span>
                   </div>
-                  <div className="w-full bg-gray-100 rounded-full h-2">
+                  <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2">
                     <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${percent}%` }} />
                   </div>
                 </div>
